@@ -20,11 +20,9 @@ const Dashboard = () => {
       .then((res) => res.json())
       .then((data) => {
         setComments(data);
-        setFiltered(data); // Also initialize filtered
+        setFiltered(data);
       })
-      .catch((err) => {
-        console.error("Error loading data", err);
-      });
+      .catch((err) => console.error("Error fetching data:", err));
   }, []);
 
   useEffect(() => {
@@ -46,6 +44,7 @@ const Dashboard = () => {
         return 0;
       });
     }
+    
 
     setFiltered(result);
   }, [comments, search, sortConfig]);
@@ -79,6 +78,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
+      <h2 className="mb-3">Comments Dashboard</h2>
 
       <div className="header-row">
         <div className="sort-buttons">
@@ -89,9 +89,9 @@ const Dashboard = () => {
         <SearchBar search={search} setSearch={setSearch} />
       </div>
 
-      {comments.length === 0 && filtered.length === 0 ? (
+      {comments.length === 0 ? (
         <p>Loading data...</p>
-      ) : paginated.length > 0 ? (
+      ) : (
         <>
           <table className="data-table">
             <thead>
@@ -105,16 +105,17 @@ const Dashboard = () => {
             <tbody>
               {paginated.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.postId}</td>
+                  <td data-label="Post ID">{item.postId}</td>
                   <td
                     className="clickable"
+                    data-label="Name"
                     onClick={() => navigate(`/profile/${(item.id % 10) || 10}`)}
                     style={{ cursor: "pointer" }}
                   >
                     {item.name}
                   </td>
-                  <td>{item.email}</td>
-                  <td>{item.body}</td>
+                  <td data-label="Email">{item.email}</td>
+                  <td data-label="Comment">{item.body}</td>
                 </tr>
               ))}
             </tbody>
@@ -135,8 +136,6 @@ const Dashboard = () => {
             />
           </div>
         </>
-      ) : (
-        <p>No matching results.</p>
       )}
     </div>
   );

@@ -291,7 +291,7 @@ body {
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .header-row {
     flex-direction: column;
-    gap: 10px;
+    
   }
 
   .sort-buttons {
